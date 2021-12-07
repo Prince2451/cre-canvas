@@ -1,10 +1,10 @@
 import React from "react";
-import { IRoute } from "../../routes";
+import { RouteObject } from "react-router-dom";
 
 const Layout: React.FC<{
-  routes: IRoute[];
+  routes: RouteObject[];
 }> = ({ children }) => {
-  return <div className="p-4 bg-primary-100">{children}</div>;
+  return <div className="bg-primary-100">{children}</div>;
 };
 
 export default Layout;

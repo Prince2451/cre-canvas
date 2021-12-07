@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Nunito Sans";
+    src: local("Nunito Sans"),
+      url(/src/assets/fonts/NunitoSans-Regular.ttf) format("truetype");
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: "Nunito Sans";
+    src: local("Nunito Sans"),
+      url(/src/assets/fonts/NunitoSans-Bold.ttf) format("truetype");
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: "Nunito Sans";
+    src: local("Nunito Sans"),
+      url(/src/assets/fonts/NunitoSans-SemiBold.ttf) format("truetype");
+    font-weight: 600;
+  }
+  @font-face {
+    font-family: Roboto;
+    src: local("Roboto"),
+      url(/src/assets/fonts/Roboto-Regular.ttf) format("truetype");
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: Roboto;
+    src: local("Roboto"),
+      url(/src/assets/fonts/Roboto-Bold.ttf) format("truetype");
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: Roboto;
+    src: local("Roboto"),
+      url(../assets/fonts/Roboto-Medium.ttf) format("truetype");
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .heading {
+    font-family: "Nunito Sans";
+    font-weight: 700;
+  }
+}
+body {
+  padding: 0;
+  margin: 0;
+}

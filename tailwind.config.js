@@ -23,6 +23,13 @@ module.exports = {
         "secondary-100": "",
         "secondary-100": "",
       },
+      minHeight: {
+        160: "40rem",
+      },
+      fontFamily: {
+        nunitoSans: ["Nunito Sans", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+      },
     },
   },
   variants: {

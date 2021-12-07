@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
+import { RouteObject } from "react-router-dom";
 import useStore from "../../App/store";
-import { IRoute } from "../../routes";
 
 const withAuth = (
   WrappedComponent: React.FC<{
     isAuthenticated: boolean;
     isCheckingAuth: boolean;
-    routes: IRoute[];
+    routes: RouteObject[];
   }>,
-  routes: IRoute[]
+  routes: RouteObject[]
 ): React.FC => {
   return ({ ...props }) => {
     const user = useStore((state) => state.user);

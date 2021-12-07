@@ -1,14 +1,8 @@
 import React from "react";
+import { RouteObject } from "react-router-dom";
 import authRoutes from "../containers/Auth/routerConfig";
 
-export interface IRoute {
-  path: string;
-  element?: React.FC | React.ComponentClass;
-  children?: Array<IRoute>;
-  index?: boolean;
-}
-
-const routes: { public: IRoute[]; private: IRoute[] } = {
+const routes: { public: RouteObject[]; private: RouteObject[] } = {
   public: [...authRoutes],
   private: [],
 };
