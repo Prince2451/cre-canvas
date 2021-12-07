@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Button,
   FormControl,
@@ -27,10 +27,6 @@ const Register: React.FC = () => {
       onRest: () => navigate("/auth/login"),
     });
   }
-
-  useEffect(() => {
-    api.start();
-  }, []);
 
   return (
     <div className="flex-col md:flex-row flex w-full items-center text-primary-900 ">

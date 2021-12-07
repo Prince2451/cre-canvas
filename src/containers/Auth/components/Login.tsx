@@ -13,7 +13,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
-import React, { useEffect } from "react";
+import React from "react";
 import { defaultAnimation } from "../../../utils/animation";
 
 const Login = () => {
@@ -27,10 +27,6 @@ const Login = () => {
       onRest: () => navigate("/auth/register"),
     });
   }
-
-  useEffect(() => {
-    api.start();
-  }, []);
 
   return (
     <div className="flex-col md:flex-row flex w-full items-center text-primary-900">
@@ -94,7 +90,9 @@ const Login = () => {
               </FormControl>
             </animated.div>
             <animated.div style={styles}>
-              <Button isFullWidth>Submit</Button>
+              <Button isLoading isFullWidth>
+                Submit
+              </Button>
             </animated.div>
           </Stack>
           <animated.div style={styles}>
