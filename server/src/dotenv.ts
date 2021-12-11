@@ -6,4 +6,4 @@ function setConfig() {
   });
 }
 
-export { setConfig };
+setConfig();

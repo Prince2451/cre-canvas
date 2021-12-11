@@ -1,4 +1,4 @@
-import e, { Router } from "express";
+import { Router } from "express";
 import * as auth from "./auth";
 
 const routes = Router();
