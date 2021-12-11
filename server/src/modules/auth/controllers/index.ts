@@ -79,4 +79,12 @@ const register: RequestHandler<
   }
 };
 
+const refreshToken: RequestHandler<any, {
+  token: string
+}, {
+  
+}> = () => {
+
+}
+
 export { login, register };

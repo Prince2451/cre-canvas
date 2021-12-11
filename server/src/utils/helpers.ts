@@ -1,19 +1,25 @@
 import { sign } from "jsonwebtoken";
-import { jwtRefreshTokenSecret, jwtSecret, tokenExpiry } from "./constants";
+import {
+  jwtRefreshTokenExpiry,
+  jwtRefreshTokenSecret,
+  jwtSecret,
+  jwtTokenExpiry,
+} from "./constants";
 
 export function generateTokens(
   data: any,
-  options: { secret?: string; refreshToken?: boolean }
+  options: { secret?: string; refreshToken?: boolean; tokenExpiry?: number }
 ): Promise<{ refreshToken?: string; token: string }>;
 export function generateTokens(
   data: any,
-  options: { secret?: string; refreshToken: false }
+  options: { secret?: string; refreshToken: false; tokenExpiry?: number }
 ): Promise<{ token: string }>;
 export function generateTokens(
   data: any,
   options?: {
     secret?: string;
     refreshToken?: true;
+    tokenExpiry?: number;
   }
 ): Promise<{
   refreshToken: string;
@@ -24,9 +30,14 @@ export function generateTokens(
   options?: {
     secret?: string;
     refreshToken?: boolean;
+    tokenExpiry?: number;
   }
 ) {
-  const { secret = jwtSecret, refreshToken = true } = options || {};
+  const {
+    secret = jwtSecret,
+    refreshToken = true,
+    tokenExpiry = jwtTokenExpiry,
+  } = options || {};
 
   return new Promise((resolve, reject) => {
     sign(
@@ -46,6 +57,7 @@ export function generateTokens(
           const { token } = await generateTokens(data, {
             secret: jwtRefreshTokenSecret,
             refreshToken: false,
+            tokenExpiry: jwtRefreshTokenExpiry,
           });
           resolve({
             token: encoded,

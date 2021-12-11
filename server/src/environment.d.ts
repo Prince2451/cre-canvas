@@ -6,6 +6,7 @@ declare namespace NodeJS {
     BCRYPT_SALT_ROUND: string;
     JWT_TOKEN_SECRET: string;
     JWT_REFRESH_TOKEN_SECRET: string;
-    TOKEN_EXPIRY: string;
+    JWT_REFRESH_TOKEN_EXPIRY: string;
+    JWT_TOKEN_EXPIRY: string;
   }
 }
