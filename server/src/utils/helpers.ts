@@ -54,13 +54,9 @@ export function generateTokens(
             token: encoded,
           });
         else {
-          const token = randomUUID();
-          const expiresAt = new Date(
-            Date.now() + refreshTokenExpiry * 1000
-          );
           resolve({
             token: encoded,
-            refreshToken: { token, expiresAt: expiresAt },
+            refreshToken: createRefreshToken(),
           });
         }
       }
@@ -68,8 +64,14 @@ export function generateTokens(
   });
 }
 
+export function createRefreshToken(): IRefreshToken {
+  const token = randomUUID();
+  const expiresAt = new Date(Date.now() + refreshTokenExpiry * 1000);
+  return { token, expiresAt };
+}
+
 export function verifyRefreshToken(expiresAt: IRefreshToken["expiresAt"]) {
-  return expiresAt.getTime() > Date.now()
+  return expiresAt.getTime() > Date.now();
 }
 
 export function throwErr(status: number, message?: string): never {

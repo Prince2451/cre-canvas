@@ -3,6 +3,7 @@ import { User } from "../models";
 import { compare, genSalt, hash } from "bcryptjs";
 import { saltRound } from "../../../utils/constants";
 import {
+  createRefreshToken,
   generateTokens,
   throwErr,
   verifyRefreshToken,
@@ -78,8 +79,14 @@ const register: RequestHandler<
       name: req.body.name,
       password: hashed,
     };
-    const { refreshToken, token } = await generateTokens(userObj);
-    await User.create({ ...userObj, refreshTokens: [refreshToken] });
+    const refreshToken = createRefreshToken();
+    const newUser = await User.create({
+      ...userObj,
+      refreshTokens: [refreshToken],
+    });
+    const { token } = await generateTokens(newUser.toObject(), {
+      refreshToken: false,
+    });
     return response
       .status(201)
       .json({ refreshToken: refreshToken.token, token });
