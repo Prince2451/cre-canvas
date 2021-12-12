@@ -1,7 +1,8 @@
 import { randomUUID } from "crypto";
 import { sign } from "jsonwebtoken";
-import { IRefreshToken } from "../modules/auth/auth";
+import { IRefreshToken, IUser, tokenFields } from "../modules/auth/authTypes";
 import { refreshTokenExpiry, jwtSecret, jwtTokenExpiry } from "./constants";
+import { withDocId } from "./helperTypes";
 
 export function generateTokens(
   data: any,
@@ -78,5 +79,14 @@ export function throwErr(status: number, message?: string): never {
   throw {
     status,
     message,
+  };
+}
+
+export function generateTokenFields(user: withDocId<IUser>): tokenFields {
+  return {
+    email: user.email,
+    name: user.name,
+    username: user.username,
+    _id: user._id,
   };
 }

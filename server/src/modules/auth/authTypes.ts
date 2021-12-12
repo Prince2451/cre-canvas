@@ -1,3 +1,6 @@
+import { Types } from "mongoose";
+import { withDocId } from "../../utils/helperTypes";
+
 export interface IUser {
   name: string;
   username: string;
@@ -10,3 +13,5 @@ export interface IRefreshToken {
   token: string;
   expiresAt: Date;
 }
+
+export type tokenFields = withDocId<Omit<IUser, "refreshTokens" | "password">>;

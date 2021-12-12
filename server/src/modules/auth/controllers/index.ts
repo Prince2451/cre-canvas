@@ -4,11 +4,12 @@ import { compare, genSalt, hash } from "bcryptjs";
 import { saltRound } from "../../../utils/constants";
 import {
   createRefreshToken,
+  generateTokenFields,
   generateTokens,
   throwErr,
   verifyRefreshToken,
 } from "../../../utils/helpers";
-import { IUser } from "../auth";
+import { IUser } from "../authTypes";
 
 const login: RequestHandler<
   any,
@@ -30,9 +31,12 @@ const login: RequestHandler<
     if (!user) throwErr(404, "User does not exists");
     const passMatch = await compare(req.body.password, user.password);
     if (!passMatch) throwErr(401, "Password do not match");
-    const { refreshToken, token } = await generateTokens(user.toObject(), {
-      refreshToken: true,
-    });
+    const { refreshToken, token } = await generateTokens(
+      generateTokenFields(user.toObject()),
+      {
+        refreshToken: true,
+      }
+    );
     user.refreshTokens.push(refreshToken);
     await user.save();
     return response
@@ -84,9 +88,12 @@ const register: RequestHandler<
       ...userObj,
       refreshTokens: [refreshToken],
     });
-    const { token } = await generateTokens(newUser.toObject(), {
-      refreshToken: false,
-    });
+    const { token } = await generateTokens(
+      generateTokenFields(newUser.toObject()),
+      {
+        refreshToken: false,
+      }
+    );
     return response
       .status(201)
       .json({ refreshToken: refreshToken.token, token });
@@ -105,17 +112,18 @@ const token: RequestHandler<
   try {
     if (!req.body.refreshToken || !req.body.username)
       return throwErr(400, "Insufficient data");
-    let projection: Partial<Record<keyof IUser, any>> = {};
+    let projection: Partial<Record<keyof Omit<IUser, "password">, any>> = {};
     for (let key in User.schema.obj) {
-      if (key === "refreshTokens") {
-        projection[key] = {
+      const userKey = key as keyof IUser;
+      if (userKey === "refreshTokens") {
+        projection[userKey] = {
           $elemMatch: {
             token: req.body.refreshToken,
           },
         };
         continue;
-      }
-      projection[key as keyof IUser] = true;
+      } else if (userKey === "password") continue;
+      projection[userKey] = true;
     }
     const user = await User.findOne(
       {
@@ -130,9 +138,12 @@ const token: RequestHandler<
     ) {
       return throwErr(401, "Invalid token");
     }
-    const { token } = await generateTokens(user.toObject(), {
-      refreshToken: false,
-    });
+    const { token } = await generateTokens(
+      generateTokenFields(user.toObject()),
+      {
+        refreshToken: false,
+      }
+    );
     return res.json({
       token,
     });
