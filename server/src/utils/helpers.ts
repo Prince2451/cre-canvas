@@ -68,6 +68,10 @@ export function generateTokens(
   });
 }
 
+export function verifyRefreshToken(expiresAt: IRefreshToken["expiresAt"]) {
+  return expiresAt.getTime() > Date.now()
+}
+
 export function throwErr(status: number, message?: string): never {
   throw {
     status,

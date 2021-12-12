@@ -11,7 +11,7 @@ const userSchema = new Schema<IUser>({
   username: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
-  refreshTokens: [refreshTokenSchema],
+  refreshTokens: [{ type: refreshTokenSchema, required: true }],
 });
 
 const User = model<IUser>("users", userSchema);

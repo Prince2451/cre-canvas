@@ -2,7 +2,12 @@ import { RequestHandler } from "express";
 import { User } from "../models";
 import { compare, genSalt, hash } from "bcryptjs";
 import { saltRound } from "../../../utils/constants";
-import { generateTokens, throwErr } from "../../../utils/helpers";
+import {
+  generateTokens,
+  throwErr,
+  verifyRefreshToken,
+} from "../../../utils/helpers";
+import { IUser } from "../auth";
 
 const login: RequestHandler<
   any,
@@ -67,7 +72,7 @@ const register: RequestHandler<
     }
     const salt = await genSalt(saltRound);
     const hashed = await hash(req.body.password, salt);
-    const userObj = {
+    const userObj: Omit<IUser, "refreshTokens"> = {
       email: req.body.email,
       username: req.body.username,
       name: req.body.name,
@@ -83,4 +88,50 @@ const register: RequestHandler<
   }
 };
 
-export { login, register };
+const token: RequestHandler<
+  any,
+  {
+    token: string;
+  },
+  Partial<{ refreshToken: string; username: string }>
+> = async (req, res, next) => {
+  try {
+    if (!req.body.refreshToken || !req.body.username)
+      return throwErr(400, "Insufficient data");
+    let projection: Partial<Record<keyof IUser, any>> = {};
+    for (let key in User.schema.obj) {
+      if (key === "refreshTokens") {
+        projection[key] = {
+          $elemMatch: {
+            token: req.body.refreshToken,
+          },
+        };
+        continue;
+      }
+      projection[key as keyof IUser] = true;
+    }
+    const user = await User.findOne(
+      {
+        username: req.body.username,
+      },
+      projection
+    );
+
+    if (
+      !user?.refreshTokens[0] ||
+      !verifyRefreshToken(user.refreshTokens[0].expiresAt)
+    ) {
+      return throwErr(401, "Invalid token");
+    }
+    const { token } = await generateTokens(user.toObject(), {
+      refreshToken: false,
+    });
+    return res.json({
+      token,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { login, register, token };
