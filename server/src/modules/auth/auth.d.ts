@@ -3,5 +3,10 @@ export interface IUser {
   username: string;
   password: string;
   email: string;
-  refreshToken: string;
+  refreshTokens: Array<IRefreshToken>;
+}
+
+export interface IRefreshToken {
+  token: string;
+  expiresAt: Date;
 }

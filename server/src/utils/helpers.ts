@@ -1,19 +1,20 @@
+import { randomUUID } from "crypto";
 import { sign } from "jsonwebtoken";
-import {
-  jwtRefreshTokenExpiry,
-  jwtRefreshTokenSecret,
-  jwtSecret,
-  jwtTokenExpiry,
-} from "./constants";
+import { IRefreshToken } from "../modules/auth/auth";
+import { refreshTokenExpiry, jwtSecret, jwtTokenExpiry } from "./constants";
 
 export function generateTokens(
   data: any,
-  options: { secret?: string; refreshToken?: boolean; tokenExpiry?: number }
-): Promise<{ refreshToken?: string; token: string }>;
+  options?: { secret?: string; refreshToken: true; tokenExpiry?: number }
+): Promise<{ refreshToken: IRefreshToken; token: string }>;
 export function generateTokens(
   data: any,
   options: { secret?: string; refreshToken: false; tokenExpiry?: number }
 ): Promise<{ token: string }>;
+export function generateTokens(
+  data: any,
+  options: { secret?: string; refreshToken?: boolean; tokenExpiry?: number }
+): Promise<{ refreshToken?: IRefreshToken; token: string }>;
 export function generateTokens(
   data: any,
   options?: {
@@ -53,15 +54,13 @@ export function generateTokens(
             token: encoded,
           });
         else {
-          /* will generate token with different secret and it will be refresh token */
-          const { token } = await generateTokens(data, {
-            secret: jwtRefreshTokenSecret,
-            refreshToken: false,
-            tokenExpiry: jwtRefreshTokenExpiry,
-          });
+          const token = randomUUID();
+          const expiresAt = new Date(
+            Date.now() + refreshTokenExpiry * 1000
+          );
           resolve({
             token: encoded,
-            refreshToken: token,
+            refreshToken: { token, expiresAt: expiresAt },
           });
         }
       }

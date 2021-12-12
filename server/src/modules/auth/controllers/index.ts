@@ -25,11 +25,13 @@ const login: RequestHandler<
     const passMatch = await compare(req.body.password, user.password);
     if (!passMatch) throwErr(401, "Password do not match");
     const { refreshToken, token } = await generateTokens(user.toObject(), {
-      refreshToken: !user.refreshToken,
+      refreshToken: true,
     });
+    user.refreshTokens.push(refreshToken);
+    await user.save();
     return response
       .status(200)
-      .json({ refreshToken: refreshToken || user.refreshToken, token });
+      .json({ refreshToken: refreshToken.token, token });
   } catch (err) {
     next(err);
   }
@@ -72,19 +74,13 @@ const register: RequestHandler<
       password: hashed,
     };
     const { refreshToken, token } = await generateTokens(userObj);
-    await User.create({ ...userObj, refreshToken });
-    return response.status(201).json({ refreshToken, token });
+    await User.create({ ...userObj, refreshTokens: [refreshToken] });
+    return response
+      .status(201)
+      .json({ refreshToken: refreshToken.token, token });
   } catch (err) {
     next(err);
   }
 };
-
-const refreshToken: RequestHandler<any, {
-  token: string
-}, {
-  
-}> = () => {
-
-}
 
 export { login, register };
