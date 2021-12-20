@@ -1,5 +1,4 @@
-import { Types } from "mongoose";
-import { withDocId } from "../../utils/types";
+import { WithDocId } from "../../utils/types";
 
 export interface IUser {
   name: string;
@@ -14,4 +13,4 @@ export interface IRefreshToken {
   expiresAt: Date;
 }
 
-export type tokenFields = withDocId<Omit<IUser, "refreshTokens" | "password">>;
+export type TokenFields = WithDocId<Omit<IUser, "refreshTokens" | "password">>;

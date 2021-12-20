@@ -1,11 +1,11 @@
-import { RequestHandler, RequestParamHandler } from "express";
+import { RequestHandler } from "express";
 import { Types } from "mongoose";
-import { tokenFields } from "../modules/auth/authTypes";
+import { TokenFields } from "../modules/auth/authTypes";
 
-export type withDocId<T extends object> = T & { _id: Types.ObjectId };
+export type WithDocId<T extends object> = T & { _id: Types.ObjectId };
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 export interface PrivateReqData extends Record<string, any> {
-  user: tokenFields;
+  user: TokenFields;
 }
 export type PublicRequestHandler<
   Params = Record<string, string>,
