@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 import { User } from "../models";
 import { compare, genSalt, hash } from "bcryptjs";
 import { saltRound } from "../../../utils/constants";
@@ -10,8 +9,11 @@ import {
   verifyRefreshToken,
 } from "../../../utils/helpers";
 import { IUser } from "../authTypes";
+import {
+  PublicRequestHandler,
+} from "../../../utils/types";
 
-const login: RequestHandler<
+const login: PublicRequestHandler<
   any,
   {
     refreshToken: string;
@@ -47,7 +49,7 @@ const login: RequestHandler<
   }
 };
 
-const register: RequestHandler<
+const register: PublicRequestHandler<
   {},
   {
     token: string;
@@ -102,7 +104,7 @@ const register: RequestHandler<
   }
 };
 
-const token: RequestHandler<
+const token: PublicRequestHandler<
   any,
   {
     token: string;

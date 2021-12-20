@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto";
-import { sign } from "jsonwebtoken";
+import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { IRefreshToken, IUser, tokenFields } from "../modules/auth/authTypes";
 import { refreshTokenExpiry, jwtSecret, jwtTokenExpiry } from "./constants";
-import { withDocId } from "./helperTypes";
+import { Optional, withDocId } from "./types";
 
 export function generateTokens(
   data: any,
@@ -82,11 +82,23 @@ export function throwErr(status: number, message?: string): never {
   };
 }
 
-export function generateTokenFields(user: withDocId<IUser>): tokenFields {
+export function generateTokenFields(
+  user: withDocId<Optional<IUser, "password" | "refreshTokens">>
+): tokenFields {
   return {
     email: user.email,
     name: user.name,
     username: user.username,
     _id: user._id,
   };
+}
+
+export function verifyToken(token: string): Promise<JwtPayload & tokenFields> {
+  return new Promise((resolve, reject) =>
+    verify(token, jwtSecret, (err, decoded) => {
+      if (err) reject(err);
+      if (decoded) resolve(decoded as JwtPayload & tokenFields);
+      reject(new Error("Token not valid"));
+    })
+  );
 }

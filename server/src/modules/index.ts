@@ -1,8 +1,10 @@
 import { Router } from "express";
 import * as auth from "./auth";
 
-const routes = Router();
+const publicRoutes = Router();
+const privateRoutes = Router();
 
-routes.use("/auth", auth.routes);
+publicRoutes.use("/auth", auth.routes.publicRoutes);
+privateRoutes.use("/auth", auth.routes.privateRoutes);
 
-export { routes };
+export { publicRoutes, privateRoutes };

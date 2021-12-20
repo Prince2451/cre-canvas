@@ -4,3 +4,4 @@ export const jwtTokenExpiry =
   +process.env.JWT_TOKEN_EXPIRY * 60 * 60; /* should be in hours */
 export const refreshTokenExpiry =
   +process.env.REFRESH_TOKEN_EXPIRY * 60 * 60; /* should be in hours */
+export const bearer = "Bearer";

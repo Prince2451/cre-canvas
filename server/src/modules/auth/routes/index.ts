@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { login, register, token } from "../controllers";
 
-const routes = Router();
+const publicRoutes = Router();
+const privateRoutes = Router();
 
-routes.post("/login", login);
-routes.post("/register", register);
-routes.post("/token", token);
+publicRoutes.post("/login", login);
+publicRoutes.post("/register", register);
+publicRoutes.post("/token", token);
 
-export { routes };
+export { publicRoutes, privateRoutes };

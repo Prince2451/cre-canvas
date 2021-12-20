@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { withDocId } from "../../utils/helperTypes";
+import { withDocId } from "../../utils/types";
 
 export interface IUser {
   name: string;
