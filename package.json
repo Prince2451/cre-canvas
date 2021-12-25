@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.6.0",
     "@react-spring/web": "^9.3.1",
     "autoprefixer": "^10.4.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^4.1.17",
     "jsonwebtoken": "^8.5.1",
@@ -21,6 +22,7 @@
     "react-icons": "^4.3.1",
     "react-konva": "^17.0.2-5",
     "react-router-dom": "^6.0.2",
+    "swr": "^1.1.1",
     "zustand": "^3.6.6"
   },
   "devDependencies": {
