@@ -18,10 +18,14 @@ import { defaultAnimation } from "../../../utils/animation";
 import { useNotification } from "../../../hooks";
 import { login } from "../../../services/auth";
 import { createErrorMessage } from "../../../utils/helpers";
+import LocalStorage from "../../../utils/localStorageHelper";
+import { refreshTokenKey, tokenKey } from "../../../utils/constants";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formFields, setFormFields] = useState({
+    email: "",
+    password: "",
+  });
   const [styles, api] = useSpring(() => defaultAnimation);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -30,11 +34,9 @@ const Login = () => {
   async function onLoginClick() {
     setIsLoading(true);
     try {
-      const { data } = await login({
-        email,
-        password,
-      });
-      console.log(data);
+      const { data } = await login(formFields);
+      LocalStorage.setItem(tokenKey, data.token);
+      LocalStorage.setItem(refreshTokenKey, data.refreshToken);
     } catch (err) {
       notification({
         description: createErrorMessage(err),
@@ -44,12 +46,11 @@ const Login = () => {
     setIsLoading(false);
   }
 
-  function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(e.target.value);
-  }
-
-  function onPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPassword(e.target.value);
+  function setFormFieldValue(e: React.ChangeEvent<HTMLInputElement>) {
+    setFormFields((values) => ({
+      ...values,
+      [e.target.name]: e.target.value,
+    }));
   }
 
   function onCreateAccPage(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -97,8 +98,8 @@ const Login = () => {
                     className="text-primary-900"
                     name="email"
                     placeholder="Email"
-                    onChange={onEmailChange}
-                    value={email}
+                    onChange={setFormFieldValue}
+                    value={formFields.email}
                   />
                 </InputGroup>
               </FormControl>
@@ -117,10 +118,10 @@ const Login = () => {
                   />
                   <Input
                     className="text-primary-900"
-                    id="password"
+                    name="password"
                     placeholder="Password"
-                    onChange={onPasswordChange}
-                    value={password}
+                    onChange={setFormFieldValue}
+                    value={formFields.password}
                   />
                 </InputGroup>
               </FormControl>
