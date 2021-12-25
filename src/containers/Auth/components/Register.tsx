@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -15,10 +15,49 @@ import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
 import { defaultAnimation } from "../../../utils/animation";
+import { useNotification } from "../../../hooks";
+import { createErrorMessage } from "../../../utils/helpers";
+import { register } from "../../../services/auth";
+import LocalStorage from "../../../utils/localStorageHelper";
+import { refreshTokenKey, tokenKey } from "../../../utils/constants";
 
 const Register: React.FC = () => {
-  const navigate = useNavigate();
+  const [formFields, setFormFields] = useState({
+    name: "",
+    email: "",
+    username: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [styles, api] = useSpring(() => defaultAnimation);
+  const navigate = useNavigate();
+  const notification = useNotification();
+
+  function setFormFieldValue(e: React.ChangeEvent<HTMLInputElement>) {
+    setFormFields((values) => ({
+      ...values,
+      [e.target.name]: e.target.value,
+    }));
+  }
+
+  async function onRegisterClick() {
+    setIsLoading(true);
+    try {
+      const { data } = await register(formFields);
+      LocalStorage.setItem(tokenKey, data.token);
+      LocalStorage.setItem(refreshTokenKey, data.refreshToken);
+      notification({
+        description: "User Created",
+        status: "success",
+      });
+    } catch (err) {
+      notification({
+        description: createErrorMessage(err),
+        status: "error",
+      });
+    }
+    setIsLoading(false);
+  }
 
   function onLoginPage(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
@@ -65,6 +104,8 @@ const Register: React.FC = () => {
                     className="text-primary-900"
                     name="name"
                     placeholder="Name"
+                    value={formFields.name}
+                    onChange={setFormFieldValue}
                   />
                 </InputGroup>
               </FormControl>
@@ -75,7 +116,7 @@ const Register: React.FC = () => {
                   fontWeight={600}
                   className="font-nunitoSans text-xs text-primary-500"
                 >
-                  User name
+                  Username
                 </FormLabel>
                 <InputGroup>
                   <InputRightElement
@@ -85,7 +126,9 @@ const Register: React.FC = () => {
                   <Input
                     className="text-primary-900"
                     name="username"
-                    placeholder="User name"
+                    placeholder="Username"
+                    value={formFields.username}
+                    onChange={setFormFieldValue}
                   />
                 </InputGroup>
               </FormControl>
@@ -107,6 +150,8 @@ const Register: React.FC = () => {
                     className="text-primary-900"
                     name="email"
                     placeholder="Email"
+                    value={formFields.email}
+                    onChange={setFormFieldValue}
                   />
                 </InputGroup>
               </FormControl>
@@ -125,14 +170,22 @@ const Register: React.FC = () => {
                   />
                   <Input
                     className="text-primary-900"
-                    id="password"
+                    name="password"
                     placeholder="Password"
+                    value={formFields.password}
+                    onChange={setFormFieldValue}
                   />
                 </InputGroup>
               </FormControl>
             </animated.div>
             <animated.div style={styles}>
-              <Button isFullWidth>Submit</Button>
+              <Button
+                onClick={onRegisterClick}
+                isLoading={isLoading}
+                isFullWidth
+              >
+                Submit
+              </Button>
             </animated.div>
           </Stack>
           <animated.div style={styles}>

@@ -2,9 +2,20 @@ import apiUrls from "./apiUrls";
 import axiosInstance from "./axios";
 
 type LoginRequestPayload = { email: string; password: string };
-type LoginResponseData = {};
-type RegisterRequestPayload = { email: string; password: string };
-type RegisterResponseData = {};
+type LoginResponseData = {
+  token: string;
+  refreshToken: string;
+};
+type RegisterRequestPayload = {
+  email: string;
+  password: string;
+  name: string;
+  username: string;
+};
+type RegisterResponseData = {
+  token: string;
+  refreshToken: string;
+};
 type RefreshTokenRequestPayload = { refreshToken: string };
 type RefreshTokenResponseData = {
   token: string;
