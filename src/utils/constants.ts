@@ -1,4 +1,4 @@
-const baseApiUrl = import.meta.env.BASE_URL + "/api";
+const baseApiUrl = import.meta.env.VITE_APP_BASE_URL + "/api";
 const tokenKey = "xmuinbbh";
 const refreshTokenKey = "uinmuhkibbh";
 
