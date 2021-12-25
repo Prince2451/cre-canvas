@@ -13,12 +13,44 @@ import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
-import React from "react";
+import React, { useState } from "react";
 import { defaultAnimation } from "../../../utils/animation";
+import { useNotification } from "../../../hooks";
+import { login } from "../../../services/auth";
+import { createErrorMessage } from "../../../utils/helpers";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [styles, api] = useSpring(() => defaultAnimation);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const notification = useNotification();
+
+  async function onLoginClick() {
+    setIsLoading(true);
+    try {
+      const { data } = await login({
+        email,
+        password,
+      });
+      console.log(data);
+    } catch (err) {
+      notification({
+        description: createErrorMessage(err),
+        status: "error",
+      });
+    }
+    setIsLoading(false);
+  }
+
+  function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setEmail(e.target.value);
+  }
+
+  function onPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value);
+  }
 
   function onCreateAccPage(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
@@ -65,6 +97,8 @@ const Login = () => {
                     className="text-primary-900"
                     name="email"
                     placeholder="Email"
+                    onChange={onEmailChange}
+                    value={email}
                   />
                 </InputGroup>
               </FormControl>
@@ -85,12 +119,14 @@ const Login = () => {
                     className="text-primary-900"
                     id="password"
                     placeholder="Password"
+                    onChange={onPasswordChange}
+                    value={password}
                   />
                 </InputGroup>
               </FormControl>
             </animated.div>
             <animated.div style={styles}>
-              <Button isLoading isFullWidth>
+              <Button onClick={onLoginClick} isLoading={isLoading} isFullWidth>
                 Submit
               </Button>
             </animated.div>
