@@ -4,10 +4,12 @@ import { connect } from "mongoose";
 import * as routes from "./modules";
 import errorMiddleware from "./middlewares/error.middleware";
 import authMiddleware from "./middlewares/auth.middleware";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api", routes.publicRoutes);
 
