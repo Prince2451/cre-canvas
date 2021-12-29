@@ -1,8 +1,16 @@
 import React from "react";
-import { RouteObject } from "react-router-dom";
 import authRoutes from "../containers/Auth/routerConfig";
 
-const routes: { public: RouteObject[]; private: RouteObject[] } = {
+export interface IAppRouteObject {
+  path: string;
+  element: React.FC;
+  index?: boolean;
+  caseSensitive?: boolean;
+  transition?: boolean;
+  children?: Array<IAppRouteObject>;
+}
+
+const routes: { public: IAppRouteObject[]; private: IAppRouteObject[] } = {
   public: [...authRoutes],
   private: [],
 };

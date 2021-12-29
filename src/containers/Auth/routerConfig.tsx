@@ -1,21 +1,21 @@
-import { RouteObject } from "react-router-dom";
 import Auth from ".";
+import { IAppRouteObject } from "../../routes";
 import Login from "./components/Login";
 import Register from "./components/Register";
 
-const routes: RouteObject[] = [
+const routes: IAppRouteObject[] = [
   {
     path: "/auth/",
-    element: <Auth />,
+    element: Auth,
     children: [
       {
         path: "login",
-        element: <Login />,
+        element: Login,
         index: true,
       },
       {
         path: "register",
-        element: <Register />,
+        element: Register,
       },
     ],
   },
