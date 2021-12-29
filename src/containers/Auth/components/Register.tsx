@@ -20,6 +20,8 @@ import { createErrorMessage } from "../../../utils/helpers";
 import { register } from "../../../services/auth";
 import LocalStorage from "../../../utils/localStorageHelper";
 import { refreshTokenKey, tokenKey } from "../../../utils/constants";
+import { queryKeys } from "../../../services/apiUrls";
+import { useQueryClient } from "react-query";
 
 const Register: React.FC = () => {
   const [formFields, setFormFields] = useState({
@@ -32,6 +34,7 @@ const Register: React.FC = () => {
   const [styles, api] = useSpring(() => defaultAnimation);
   const navigate = useNavigate();
   const notification = useNotification();
+  const queryClient = useQueryClient();
 
   function setFormFieldValue(e: React.ChangeEvent<HTMLInputElement>) {
     setFormFields((values) => ({
@@ -46,6 +49,7 @@ const Register: React.FC = () => {
       const { data } = await register(formFields);
       LocalStorage.setItem(tokenKey, data.token);
       LocalStorage.setItem(refreshTokenKey, data.refreshToken);
+      queryClient.invalidateQueries(queryKeys.user);
       notification({
         description: "User Created",
         status: "success",
