@@ -1,4 +1,5 @@
-import apiUrls from "./apiUrls";
+import { IUser } from "../containers/Auth/types";
+import { apiUrls } from "./apiUrls";
 import axiosInstance from "./axios";
 
 type LoginRequestPayload = { email: string; password: string };
@@ -20,6 +21,7 @@ type RefreshTokenRequestPayload = { refreshToken: string };
 type RefreshTokenResponseData = {
   token: string;
 };
+type UserResponseData = IUser;
 
 function login(payload: LoginRequestPayload) {
   return axiosInstance.post<LoginResponseData>(apiUrls.auth.login, payload);
@@ -36,5 +38,8 @@ function getRefreshToken(payload: RefreshTokenRequestPayload) {
     payload
   );
 }
+function getUser() {
+  return axiosInstance.get<UserResponseData>(apiUrls.auth.user);
+}
 
-export { login, register, getRefreshToken };
+export { login, register, getRefreshToken, getUser };

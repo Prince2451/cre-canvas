@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import useStore from "../../App/store";
+import { useUser } from "../../containers/Auth/queryHooks";
 import { IAppRouteObject } from "../../routes";
+import { default as globalRoutes } from "../../routes";
 
 const withAuth = (
   WrappedComponent: React.FC<{
@@ -8,21 +9,17 @@ const withAuth = (
     isCheckingAuth: boolean;
     routes: IAppRouteObject[];
   }>,
-  routes: IAppRouteObject[]
+  routes: typeof globalRoutes
 ): React.FC => {
   return ({ ...props }) => {
-    const user = useStore((state) => state.user);
+    const { user, isAuthenticated, isLoading, isFetched } = useUser();
 
-    useEffect(() => {
-      // handle authentication
-    }, [user]);
-
-    return (
+    return isLoading && !isFetched ? null : (
       <WrappedComponent
         {...props}
         isAuthenticated={!!user}
         isCheckingAuth={false}
-        routes={routes}
+        routes={routes[isAuthenticated ? "private" : "public"]}
       />
     );
   };

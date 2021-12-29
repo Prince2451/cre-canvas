@@ -1,7 +1,5 @@
-import { useTransition } from "@react-spring/web";
-import { useState } from "react";
-import { Route, Routes, useRoutes } from "react-router-dom";
-import routes from "../containers/Auth/routerConfig";
+import { Route, Routes } from "react-router-dom";
+import routes from "../routes";
 import Layout from "../containers/Layouts";
 import withAuth from "../hoc/withAuth";
 import { IAppRouteObject } from "../routes";

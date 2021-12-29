@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as constants from "../utils/constants";
 import LocalStorage from "../utils/localStorageHelper";
-import apiUrls from "./apiUrls";
+import { apiUrls } from "./apiUrls";
 import { getRefreshToken } from "./auth";
 
 const axiosInstance = axios.create({

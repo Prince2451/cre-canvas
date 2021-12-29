@@ -20,6 +20,8 @@ import { login } from "../../../services/auth";
 import { createErrorMessage } from "../../../utils/helpers";
 import LocalStorage from "../../../utils/localStorageHelper";
 import { refreshTokenKey, tokenKey } from "../../../utils/constants";
+import { useQueryClient } from "react-query";
+import { queryKeys } from "../../../services/apiUrls";
 
 const Login = () => {
   const [formFields, setFormFields] = useState({
@@ -30,6 +32,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const notification = useNotification();
+  const queryClient = useQueryClient();
 
   async function onLoginClick() {
     setIsLoading(true);
@@ -37,6 +40,7 @@ const Login = () => {
       const { data } = await login(formFields);
       LocalStorage.setItem(tokenKey, data.token);
       LocalStorage.setItem(refreshTokenKey, data.refreshToken);
+      queryClient.invalidateQueries(queryKeys.user);
     } catch (err) {
       notification({
         description: createErrorMessage(err),
