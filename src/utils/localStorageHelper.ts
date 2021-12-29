@@ -1,16 +1,21 @@
 class LocalStorage {
   private static _callLocalStorage(functionName: string, ...args: string[]) {
-    try{
+    try {
       return localStorage[functionName](...args);
     } catch (er) {
       return undefined;
     }
   }
   static getItem(key: string) {
-    return LocalStorage._callLocalStorage("getItem", key);
+    const data = LocalStorage._callLocalStorage("getItem", key);
+    return data && JSON.parse(data);
   }
   static setItem(key: string, value: any) {
-    return LocalStorage._callLocalStorage("setItem", key, JSON.stringify(value));
+    return LocalStorage._callLocalStorage(
+      "setItem",
+      key,
+      JSON.stringify(value)
+    );
   }
   static removeItem(key: string) {
     return LocalStorage._callLocalStorage("removeItem", key);
