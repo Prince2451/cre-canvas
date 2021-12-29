@@ -7,7 +7,7 @@ import { IAppRouteObject } from "../routes";
 import "./index.css";
 
 const App: React.FC = withAuth(
-  ({ isAuthenticated, isCheckingAuth, routes }) => {
+  ({ isAuthenticated, routes }) => {
     function createRoutes(currRoutes: IAppRouteObject[]) {
       const routesCom = currRoutes.map((ele) => (
         <Route key={ele.path} {...ele} element={<ele.element />}>
@@ -20,7 +20,9 @@ const App: React.FC = withAuth(
     return (
       <div>
         <Layout routes={routes}>
-          <Routes>{createRoutes(routes)}</Routes>
+          <Routes>
+            {createRoutes(routes)}
+          </Routes>
         </Layout>
       </div>
     );

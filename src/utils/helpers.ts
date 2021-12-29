@@ -7,3 +7,7 @@ export function createErrorMessage(err: any) {
   }
   return message;
 }
+
+export function redirectPath(isAuthenticated: boolean) {
+  return isAuthenticated ? "/" : "/auth/login";
+}
