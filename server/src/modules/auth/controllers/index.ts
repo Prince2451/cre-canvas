@@ -8,8 +8,9 @@ import {
   throwErr,
   verifyRefreshToken,
 } from "../../../utils/helpers";
-import { IUser } from "../authTypes";
+import { IUser, TokenFields } from "../authTypes";
 import {
+  PrivateRequestHandler,
   PublicRequestHandler,
 } from "../../../utils/types";
 
@@ -154,4 +155,8 @@ const token: PublicRequestHandler<
   }
 };
 
-export { login, register, token };
+const user: PrivateRequestHandler<any, TokenFields> = (_, res) => {
+  return res.json(res.locals.user);
+};
+
+export { login, register, token, user };
