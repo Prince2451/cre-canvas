@@ -1,6 +1,6 @@
 import React from "react";
-import authRoutes from "../containers/Auth/routerConfig";
-import documentRoutes from "../containers/Documents/routerConfig";
+import authRoutes from "../modules/Auth/routerConfig";
+import documentRoutes from "../modules/Documents/routerConfig";
 
 export interface IAppRouteObject {
   path: string;

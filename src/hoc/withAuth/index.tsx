@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../containers/Auth/queryHooks";
+import { useUser } from "../../modules/Auth/queryHooks";
 import { IAppRouteObject } from "../../routes";
 import { default as globalRoutes } from "../../routes";
 import { redirectPath } from "../../utils/helpers";

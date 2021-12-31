@@ -1,4 +1,4 @@
-import { IUser } from "../containers/Auth/types";
+import { IUser } from "../modules/Auth/types";
 import { apiUrls } from "./apiUrls";
 import axiosInstance from "./axios";
 

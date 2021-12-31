@@ -1,5 +1,5 @@
 import create, { GetState, SetState } from "zustand";
-import createAuthSlice, { IAuthSlice } from "../../containers/Auth/authSlice";
+import createAuthSlice, { IAuthSlice } from "../../modules/Auth/authSlice";
 
 export type StoreState = IAuthSlice;
 
