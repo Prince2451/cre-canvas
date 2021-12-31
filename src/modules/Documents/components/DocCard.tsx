@@ -35,7 +35,7 @@ const DocCard: React.FC<IDocCard> = ({ to, title, image, description }) => {
           <Text size="xs" className="w-full text-gray-500">
             {description}
           </Text>
-          <LinkOverlay className="self-end " as={Link} to="/canvas/sf">
+          <LinkOverlay className="self-end " as={Link} to={to}>
             <MdEditNote className="box-content p-3" />
           </LinkOverlay>
         </Box>

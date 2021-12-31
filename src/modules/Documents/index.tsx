@@ -6,26 +6,27 @@ const Documents: React.FC = () => {
       title: "hlfe",
       description: "lfsjdf",
       image: "jfsldf",
-      to: "ljfsdkl",
+      to: "/canvas/something",
     },
     {
       title: "hlfe",
-      description: "ljfsdkl fsd fsdjfsd fjklsdjfkldsjf klsjf ksldjf klsd fjlksf",
+      description:
+        "/canvas/something fsd fsdjfsd fjklsdjfkldsjf klsjf ksldjf klsd fjlksf",
       image: "jfsldf",
-      to: "ljfsdkl",
+      to: "/canvas/something",
     },
     {
       title: "hlffds fsd fds fds fsdfe",
       description: "lfsjdf",
       image: "jfsldf",
-      to: "ljfsdkl fsd fsdjfsd fjklsdjfkldsjf klsjf ksldjf klsd fjlksf",
+      to: "/canvas/something",
     },
   ];
 
   return (
     <div className="grid md:grid-cols-6 gap-3">
       {dummyData.map((ele) => (
-        <DocCard {...ele} />
+        <DocCard key={ele.to} {...ele} />
       ))}
     </div>
   );
