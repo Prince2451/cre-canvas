@@ -1,13 +1,23 @@
-import createArrowTool from "./Arrow";
-import createCircleTool from "./Circle";
-import createPenTool from "./Pen";
-import createRectangleTool from "./Rectangle";
+import React from "react";
+import { Tool, ToolCreator } from "../types";
+import * as Arrow from "./Arrow";
+import * as Circle from "./Circle";
+import * as Pen from "./Pen";
+import * as Rectangle from "./Rectangle";
 
-const toolCreators = [
-  createArrowTool,
-  createPenTool,
-  createCircleTool,
-  createRectangleTool,
+const tools: { createTool: ToolCreator; Component?: React.FC }[] = [
+  Arrow,
+  Pen,
+  Circle,
+  Rectangle,
 ];
 
-export default toolCreators;
+const components: Record<Tool["type"], React.FC | null> = {};
+const toolCreators: ToolCreator[] = [];
+
+tools.forEach((tool) => {
+  toolCreators.push(tool.createTool);
+  components[tool.createTool().type] = tool.Component || null;
+});
+
+export { toolCreators, components };

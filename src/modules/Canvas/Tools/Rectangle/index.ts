@@ -1,16 +1,4 @@
-import { Tool, ToolCreator } from "../../types";
-import { BiRectangle } from "react-icons/bi";
+import createTool from "./creator";
+import Component from "./Component";
 
-export interface IRectangleTool extends Tool {
-  type: "RECTANGLE";
-}
-
-const createRectangleTool: ToolCreator<IRectangleTool> = () => {
-  return {
-    description: "Rectangle Tool",
-    Icon: BiRectangle,
-    type: "RECTANGLE",
-  };
-};
-
-export default createRectangleTool;
+export { createTool, Component };

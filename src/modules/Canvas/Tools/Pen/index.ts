@@ -1,16 +1,4 @@
-import { Tool, ToolCreator } from "../../types";
-import { BsPen } from "react-icons/bs";
+import createTool from "./creator";
+import Component from "./Component";
 
-export interface IPenTool extends Tool {
-  type: "PEN";
-}
-
-const createPenTool: ToolCreator<IPenTool> = () => {
-  return {
-    description: "Pen Tool",
-    Icon: BsPen,
-    type: "PEN",
-  };
-};
-
-export default createPenTool;
+export { createTool, Component };

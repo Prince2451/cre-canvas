@@ -7,4 +7,4 @@ export type Tool = {
   children?: Array<Tool>;
 };
 
-export type ToolCreator<T extends Tool> = () => T
+export type ToolCreator<T extends Tool = Tool> = () => T

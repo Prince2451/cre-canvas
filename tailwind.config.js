@@ -30,6 +30,9 @@ module.exports = {
         nunitoSans: ["Nunito Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
       },
+      height: {
+        "h-10/12-screen": "83.333333vh",
+      },
     },
   },
   variants: {

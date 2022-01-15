@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "framer-motion": "^4.1.17",
     "jsonwebtoken": "^8.5.1",
+    "konva": "^8.3.2",
     "postcss": "^8.4.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
