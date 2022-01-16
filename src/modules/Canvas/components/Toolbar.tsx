@@ -9,25 +9,29 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
+import { Slice } from "../slice";
 import { Tool } from "../types";
 
-interface IToolbarProps {
+interface ToolbarProps {
   tools: Array<Tool>;
+  selectedTool: Slice["selectedTool"];
+  onChange: (tool: Slice["selectedTool"]) => void;
 }
 
-const Toolbar: React.FC<IToolbarProps> = ({ tools }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ tools, selectedTool, onChange }) => {
   function createTools(tools: Array<Tool>, menu: boolean = false) {
     const Item = menu ? MenuItem : ListItem;
-    return tools.map((ele) => (
+    return tools.map((ele, i) => (
       <Item>
         {ele.children ? (
           <Menu>
             {({ isOpen }) => (
               <MenuButton
-                isActive={isOpen}
+                isActive={selectedTool.type === ele.type}
                 as={IconButton}
                 aria-label={ele.description}
                 rightIcon={<BsArrowRight />}
+                onClick={() => onChange(ele)}
               >
                 {<ele.Icon />}
               </MenuButton>
@@ -37,13 +41,14 @@ const Toolbar: React.FC<IToolbarProps> = ({ tools }) => {
         ) : (
           <Tooltip
             label={ele.description}
-            openDelay={500}
+            openDelay={1500}
             hasArrow
             placement="right"
             padding="0.5rem"
+            beha
           >
             <IconButton
-              isActive={Math.random() > 0.7}
+              isActive={selectedTool.type === ele.type}
               boxShadow={`2px 2px 4px 0 var(--chakra-colors-gray-300),
                           -2px -2px 4px 0 var(--chakra-colors-gray-100)`}
               _active={{
@@ -52,6 +57,7 @@ const Toolbar: React.FC<IToolbarProps> = ({ tools }) => {
               }}
               variant="ghost"
               aria-label={ele.description}
+              onClick={() => onChange(ele)}
             >
               <ele.Icon />
             </IconButton>

@@ -4,6 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Layer, Stage } from "react-konva";
 import Panel from "./components/Panel";
 import { toolCreators } from "./Tools";
+import useStore, { StoreState } from "../../App/store";
+import shallow from "zustand/shallow";
+
+const getSelectedTool = (state: StoreState) => ({
+  selectedTool: state.selectedTool,
+  setSelectedTool: state.setSelectedTool,
+});
 
 const Canvas: React.FC = () => {
   const [stageConfig, setStageConfig] = useState({
@@ -12,10 +19,13 @@ const Canvas: React.FC = () => {
     scaleX: 1,
     scaleY: 1,
   });
+  
+  const { selectedTool, setSelectedTool } = useStore(getSelectedTool, shallow);
 
-  const tools = toolCreators.map((creator) => creator());
   const stageContainer = useRef<HTMLDivElement>(null);
   const stage = useRef<StageType>(null);
+
+  const tools = toolCreators.map((creator) => creator());
 
   useEffect(() => {
     function setStageSize() {
@@ -41,7 +51,11 @@ const Canvas: React.FC = () => {
 
   return (
     <div>
-      <Panel tools={tools} />
+      <Panel
+        tools={tools}
+        selectedTool={selectedTool}
+        onChange={setSelectedTool}
+      />
       <div
         style={{ marginTop: "7vh" }}
         ref={stageContainer}

@@ -1,7 +1,9 @@
 import create, { GetState, SetState } from "zustand";
-import createAuthSlice, { IAuthSlice } from "../../modules/Auth/authSlice";
+import createAuthSlice, {
+  Slice as CanvasSlice,
+} from "../../modules/Canvas/slice";
 
-export type StoreState = IAuthSlice;
+export type StoreState = CanvasSlice;
 
 export type StoreSlice<T> = (
   set: SetState<StoreState>,
