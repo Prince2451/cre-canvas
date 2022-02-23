@@ -14,7 +14,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
-import { defaultAnimation } from "../../../utils/animation";
+import { defaultAnimation } from "../../../animations";
 import { useNotification } from "../../../hooks";
 import { createErrorMessage } from "../../../utils/helpers";
 import { register } from "../../../services/auth";

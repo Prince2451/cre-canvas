@@ -17,7 +17,7 @@ import React, { useRef, useState } from "react";
 import {
   defaultAnimation,
   loginNavigationAnimation,
-} from "../../../utils/animation";
+} from "../../../animations";
 import { useNotification } from "../../../hooks";
 import { login } from "../../../services/auth";
 import { createErrorMessage } from "../../../utils/helpers";
