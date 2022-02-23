@@ -2,8 +2,9 @@ import create, { GetState, SetState } from "zustand";
 import createAuthSlice, {
   Slice as CanvasSlice,
 } from "../../modules/Canvas/slice";
+import createAppSlice, { Slice as AppSlice } from "../slice";
 
-export type StoreState = CanvasSlice;
+export type StoreState = CanvasSlice & AppSlice;
 
 export type StoreSlice<T> = (
   set: SetState<StoreState>,
@@ -13,6 +14,7 @@ export type StoreSlice<T> = (
 const useStore = create<StoreState>((set, get) => {
   return {
     ...createAuthSlice(set, get),
+    ...createAppSlice(set, get),
   };
 });
 

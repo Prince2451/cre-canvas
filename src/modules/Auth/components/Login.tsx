@@ -13,8 +13,11 @@ import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
-import React, { useState } from "react";
-import { defaultAnimation } from "../../../utils/animation";
+import React, { useRef, useState } from "react";
+import {
+  defaultAnimation,
+  loginNavigationAnimation,
+} from "../../../utils/animation";
 import { useNotification } from "../../../hooks";
 import { login } from "../../../services/auth";
 import { createErrorMessage } from "../../../utils/helpers";
@@ -22,22 +25,41 @@ import LocalStorage from "../../../utils/localStorageHelper";
 import { refreshTokenKey, tokenKey } from "../../../utils/constants";
 import { useQueryClient } from "react-query";
 import { queryKeys } from "../../../services/apiUrls";
+import useStore from "../../../App/store";
 
 const Login = () => {
   const [formFields, setFormFields] = useState({
     email: "",
     password: "",
   });
-  const [styles, api] = useSpring(() => defaultAnimation);
   const [isLoading, setIsLoading] = useState(false);
+  const [styles, api] = useSpring(() => defaultAnimation);
+  const { startAnimation, resetAnimation } = useStore(
+    (selector) => selector.navigatingAnimation
+  );
+  const loginButton = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
   const notification = useNotification();
   const queryClient = useQueryClient();
 
-  async function onLoginClick() {
+  async function onLoginClick(ev: React.MouseEvent<HTMLButtonElement>) {
     setIsLoading(true);
     try {
       const { data } = await login(formFields);
+      startAnimation("login", {
+        animate: {
+          ...loginNavigationAnimation,
+          onRest: () => {
+            resetAnimation();
+          },
+        },
+        initials: {
+          x: ev.pageX,
+          y: ev.pageY,
+          width: loginButton.current!.clientWidth,
+          height: loginButton.current!.clientHeight,
+        },
+      });
       LocalStorage.setItem(tokenKey, data.token);
       LocalStorage.setItem(refreshTokenKey, data.refreshToken);
       queryClient.invalidateQueries(queryKeys.user);
@@ -131,7 +153,12 @@ const Login = () => {
               </FormControl>
             </animated.div>
             <animated.div style={styles}>
-              <Button onClick={onLoginClick} isLoading={isLoading} isFullWidth>
+              <Button
+                ref={loginButton}
+                onClick={onLoginClick}
+                isLoading={isLoading}
+                isFullWidth
+              >
                 Submit
               </Button>
             </animated.div>
